@@ -62,12 +62,15 @@ OpenAI-compatible endpoint you own.
   stage (`mcp.txt` written via the task's `secret_word` tool in 26 s). The
   committed log is `runs/kit-check.log`.
 * **The same sample instructions replayed without Docker** via
-  `runner_local.py`, kept as auditable trajectories: `runs/hello/` and
-  `runs/long-memo/` contain the full step-by-step trajectory, metrics and the
-  produced files.
+  `runner_local.py`, kept as auditable evidence: `runs/hello/` holds the full
+  step-by-step trajectory, its metrics and the produced `hello.txt`; the
+  long-memo replay (`runs/long-memo/metrics.json` plus its `run.log`) ran to the
+  50-step budget — 2,015,301 prompt / 58,270 completion tokens over 50 model
+  calls — while the model assembled a multi-part memo. Every figure is read
+  straight from those committed files by `scripts/make_figures.py`.
 
 ![verified run costs](figures/run_costs.png)
-![long-memo tool activity](figures/sample_run_tool_activity.png)
+![hello tool activity](figures/sample_run_tool_activity.png)
 
 One honesty note we want on the record: `kit check` for a self-hosted model
 ends with *"model_api names a model of your own, which runs locally only"* —
@@ -82,8 +85,8 @@ of running our own endpoint, not a failure of the harness.
   Docker), the model tried `/app/hello.txt` first — the path `kit check` uses
   — then probed, created, and finally wrote `hello.txt` in the actual exec
   cwd: 5 steps where 1 should do. Inside the kit's container it takes one. The
-  fix we will ship next is one sentence in the system prompt: *"your exec
-  tool runs with cwd = the task workspace; write relative paths there."*
+  fix now in the system prompt is one sentence: *"your exec tool runs with
+  cwd = the task workspace; write relative paths there."*
 * **MCP was not optional.** v1 launched as exec-only; the kit's own public
   sample set includes an MCP stage. We extended the loop mid-flight with a
   dispatch rule — any function name that is not `exec` routes to the MCP

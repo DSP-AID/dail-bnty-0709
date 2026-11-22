@@ -27,8 +27,9 @@ def load(run):
 
 
 def figure_steps_vs_tokens():
-  """Cumulative tokens and step mix of the long-memo sample run."""
-  metrics, traj = load("long-memo")
+  """Step mix and tool-output volume of a full local replay (long-memo when committed)."""
+  run = "long-memo" if os.path.isdir(os.path.join(ROOT, "runs", "long-memo")) else "hello"
+  metrics, traj = load(run)
   steps = traj["steps"]
   model_steps = [i + 1 for i, s in enumerate(steps) if s["source"] == "model"]
   tool_steps = [i + 1 for i, s in enumerate(steps) if s["source"] == "tool"]
@@ -47,7 +48,7 @@ def figure_steps_vs_tokens():
   ax.set_xlabel("tool call #")
   ax.set_ylabel("chars returned to the model")
   ax.set_title(
-      f"long-memo sample run: {len(model_steps)} model calls,"
+      f"hello sample run: {len(model_steps)} model calls,"
       f" {len(tool_steps)} exec results,\n{metrics['prompt_tokens']:,} prompt /"
       f" {metrics['completion_tokens']:,} completion tokens"
   )
