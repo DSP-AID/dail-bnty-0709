@@ -1,0 +1,13 @@
+# Harness v1 for the Physical-Engineering's Last Exam harness competition.
+# The model endpoint is configured at run time (see README.md); the committed
+# model_base_url below is a placeholder, as the kit requires a public DNS name.
+name: bnty-0709-harness-v1
+model_api: openai-compatible/qwen3.8-flash-next-iq3_s
+model_base_url: https://llm.example.org/v1
+install: >-
+  uv venv --python 3.12 /opt/harness/venv
+  && uv pip install --python /opt/harness/venv/bin/python -r {src}/requirements.txt
+serve: /opt/harness/venv/bin/python {src}/serve.py
+env:
+  MAX_STEPS: "120"
+  MAX_OUTPUT_TOKENS: "4096"

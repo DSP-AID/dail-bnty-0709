@@ -1,0 +1,9 @@
+# Vendored files are kept byte-identical to the official kit — don't lint them.
+exclude = ["taskbridge.py", "plekit/spec.py", "plekit/models.py"]
+
+[lint]
+# BLE001: catching broad Exception is the point of a loop that must never die.
+ignore = ["BLE001"]
+
+[lint.per-file-ignores]
+"tests/*" = ["RUF012"]

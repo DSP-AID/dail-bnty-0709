@@ -1,0 +1,1 @@
+The task's MCP server `apps` has a tool named `secret_word`. Call it, then create a file named `mcp.txt` in the current working directory (`/app`) whose entire content is the single word the tool returns. Do not create any other files. When the file exists, reply with the word done and stop.

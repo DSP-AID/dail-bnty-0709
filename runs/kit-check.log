@@ -1,0 +1,10 @@
+[PASS] submission.yaml: bnty-0709-harness-v1: openai-compatible/qwen3.8-flash-next-iq3_s, egress llm.example.org:443
+[WARN] files: this folder is not a git repository, and the server builds a commit: what is committed is checked in a repository of its own
+[PASS] build: bundle 110 MiB, built in 73 s; image plebench-serve:c8ce8759b9190654
+[PASS] model: qwen3.8-flash-next-iq3_s (openai-compatible) answered in 8.7 s through the egress proxy
+[PASS] listen: websocket accepted 2 s after start
+[PASS] smoke: hello.txt written, done in 49 s with 1 request(s), no usage frames (optional); final message 'done'
+[PASS] mcp: mcp.txt written, done in 26 s with 5 request(s), no usage frames (optional); final message 'done'
+[WARN] artifacts: no artifacts/ yet: `uv run python eval/run.py /opt/workspace/tasks/bnty_0709/src` writes it
+
+the stages that ran pass, but model_api names a model of your own, which runs locally only: the competition accepts only google-cloud/<id> models (docs/models.md) (logs in /opt/workspace/tasks/bnty_0709/tmp/checkwork)

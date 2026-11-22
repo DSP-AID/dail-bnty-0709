@@ -1,0 +1,49 @@
+{
+ "submission": "bnty-0709-harness-v1",
+ "stages": [
+  {
+   "name": "submission.yaml",
+   "status": "pass",
+   "detail": "bnty-0709-harness-v1: openai-compatible/qwen3.8-flash-next-iq3_s, egress llm.example.org:443"
+  },
+  {
+   "name": "files",
+   "status": "warn",
+   "detail": "this folder is not a git repository, and the server builds a commit: what is committed is checked in a repository of its own"
+  },
+  {
+   "name": "build",
+   "status": "pass",
+   "detail": "bundle 110 MiB, built in 73 s; image plebench-serve:c8ce8759b9190654"
+  },
+  {
+   "name": "model",
+   "status": "pass",
+   "detail": "qwen3.8-flash-next-iq3_s (openai-compatible) answered in 8.7 s through the egress proxy"
+  },
+  {
+   "name": "listen",
+   "status": "pass",
+   "detail": "websocket accepted 2 s after start"
+  },
+  {
+   "name": "smoke",
+   "status": "pass",
+   "detail": "hello.txt written, done in 49 s with 1 request(s), no usage frames (optional); final message 'done'"
+  },
+  {
+   "name": "mcp",
+   "status": "pass",
+   "detail": "mcp.txt written, done in 26 s with 5 request(s), no usage frames (optional); final message 'done'"
+  },
+  {
+   "name": "artifacts",
+   "status": "warn",
+   "detail": "no artifacts/ yet: `uv run python eval/run.py /opt/workspace/tasks/bnty_0709/src` writes it"
+  }
+ ],
+ "requested": [],
+ "unready": "own-model",
+ "untested": [],
+ "ready": false
+}
