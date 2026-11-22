@@ -28,7 +28,7 @@ def load(run):
 
 def figure_steps_vs_tokens():
   """Step mix and tool-output volume of a full local replay (long-memo when committed)."""
-  run = "long-memo" if os.path.isdir(os.path.join(ROOT, "runs", "long-memo")) else "hello"
+  run = "long-memo" if os.path.exists(os.path.join(ROOT, "runs", "long-memo", "trajectory.json")) else "hello"
   metrics, traj = load(run)
   steps = traj["steps"]
   model_steps = [i + 1 for i, s in enumerate(steps) if s["source"] == "model"]
@@ -48,7 +48,7 @@ def figure_steps_vs_tokens():
   ax.set_xlabel("tool call #")
   ax.set_ylabel("chars returned to the model")
   ax.set_title(
-      f"hello sample run: {len(model_steps)} model calls,"
+      f"{run} sample run: {len(model_steps)} model calls,"
       f" {len(tool_steps)} exec results,\n{metrics['prompt_tokens']:,} prompt /"
       f" {metrics['completion_tokens']:,} completion tokens"
   )
@@ -63,7 +63,8 @@ def figure_run_costs():
   names, steps, prompt, completion = [], [], [], []
   for run in runs:
     try:
-      m, _ = load(run)
+      with open(os.path.join(ROOT, "runs", run, "metrics.json")) as fh:
+        m = json.load(fh)
     except (FileNotFoundError, KeyError):
       continue
     names.append(run)
