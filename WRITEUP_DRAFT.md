@@ -64,11 +64,12 @@ OpenAI-compatible endpoint you own.
 * **The same sample instructions replayed without Docker** via
   `runner_local.py`, kept as auditable evidence: `runs/hello/` holds the full
   step-by-step trajectory, its metrics and the produced `hello.txt`; the
-  long-memo replay (`runs/long-memo/metrics.json` plus its `run.log`) consumed
-  2,015,301 prompt / 58,270 completion tokens over 50 model round trips while
-  the model assembled the memo in parts, and stopped there without a final
-  message. Every figure is read straight from those committed files by
-  `scripts/make_figures.py`.
+  long-memo replay (`runs/long-memo/metrics.json` plus its `run.log`) spent
+  2,015,301 prompt / 58,270 completion tokens over 50 model round trips, wrote
+  the memo as `part1.md` / `part2.md` / `part3.md`, and then ended on a
+  content-only message announcing more work — the "pause is not a finish" bug
+  below, at full length. Every figure is read straight from those committed
+  files by `scripts/make_figures.py`.
 
 ![verified run costs](figures/run_costs.png)
 ![hello tool activity](figures/sample_run_tool_activity.png)
@@ -94,13 +95,15 @@ of running our own endpoint, not a failure of the harness.
   client — which cost one extra parameter, one branch, and one test. The
   stage then passed on the first re-run.
 * **A pause is not a finish.** The loop ends on any model message that carries
-  no tool call — that is the "final message" contract. On a long-memo replay the
-  model used such a message to announce *"let me rewrite with explicit
-  dimensional checks"* and stopped after 7 steps, mid-thought, with the memo
-  unwritten. That replay is committed as `runs/long-memo-retry/` (7 model round
-  trips, 11,422 prompt / 7,238 completion tokens) precisely so the failure is
-  visible rather than hidden; the next iteration forces one
-  more round trip when a content-only message does not name a written file.
+  no tool call — that is the "final message" contract. Both long-memo replays
+  tripped on it: the 50-round-trip run stopped right after writing three memo
+  parts and announcing its next edit, and the replay after the cwd fix stopped
+  after 7 round trips (11,422 prompt / 7,238 completion tokens) with *"let me
+  rewrite with explicit dimensional checks"* and the memo unwritten. Both are
+  committed (`runs/long-memo/`, and `runs/long-memo-retry/` with its trajectory
+  and final message) so the failure is visible rather than hidden; the next
+  iteration forces one more round trip when a content-only message does not
+  name a written file.
 * **Gated inputs.** The full dev task inputs live in an auto-gated Hugging
   Face dataset; without a token the files 401. So "runs end-to-end on public
   sample tasks" here means the kit's own smoke stages plus their verbatim
